@@ -1,5 +1,6 @@
 package com.sam_chordas.android.stockhawk.rest;
 
+
 import android.content.ContentProviderOperation;
 import android.util.Log;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
@@ -13,6 +14,7 @@ import org.json.JSONObject;
  * Created by sam_chordas on 10/8/15.
  */
 public class Utils {
+
 
   private static String LOG_TAG = Utils.class.getSimpleName();
 
