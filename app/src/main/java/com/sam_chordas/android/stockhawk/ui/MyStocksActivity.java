@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.sam_chordas.android.stockhawk.R;
@@ -32,6 +33,7 @@ import com.sam_chordas.android.stockhawk.service.StockTaskService;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
+import com.facebook.stetho.Stetho;
 import com.melnykov.fab.FloatingActionButton;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
 
@@ -86,11 +88,11 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
               @Override public void onItemClick(View v, int position) {
                 //TODO:
                 // do something on item click
-                Toast toast =
-                        Toast.makeText(MyStocksActivity.this, "StockClicked!",
-                                Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
-                toast.show();
+                Intent intent = new Intent(mContext, DetailActivity.class);
+                TextView tv = (TextView) v.findViewById(R.id.stock_symbol);
+
+                intent.putExtra("stockdata", tv.getText());
+                startActivity(intent);
               }
             }));
     recyclerView.setAdapter(mCursorAdapter);
@@ -158,6 +160,14 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       // are updated.
       GcmNetworkManager.getInstance(this).schedule(periodicTask);
     }
+    Stetho.initialize(
+            Stetho.newInitializerBuilder(this)
+                    .enableDumpapp(
+                            Stetho.defaultDumperPluginsProvider(this))
+                    .enableWebKitInspector(
+                            Stetho.defaultInspectorModulesProvider(this))
+                    .build());
+
   }
 
 
