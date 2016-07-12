@@ -7,11 +7,14 @@ import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.RemoteException;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
+import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.network.StockNetworkAdapter;
@@ -36,6 +39,7 @@ public class StockTaskService extends GcmTaskService {
 
     private OkHttpClient client = new OkHttpClient();
     private Context mContext;
+
     private StringBuilder mStoredSymbols = new StringBuilder();
     private boolean isUpdate;
 
@@ -114,6 +118,14 @@ public class StockTaskService extends GcmTaskService {
             try {
                 getResponse = sna.getStock(urlString);
                 result = GcmNetworkManager.RESULT_SUCCESS;
+                if (params.getTag().equals("add"))
+                    if (getResponse.query.results.quote.get(0).bid == null) {
+
+                        Intent intent = new Intent("invalidstock");
+                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                        return result;
+                    }
+
                 try {
                     ContentValues contentValues = new ContentValues();
                     // update ISCURRENT to 0 (false) so new data is current
@@ -133,6 +145,7 @@ public class StockTaskService extends GcmTaskService {
                 } catch (RemoteException | OperationApplicationException e) {
                     Log.e(LOG_TAG, "Error applying batch insert", e);
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

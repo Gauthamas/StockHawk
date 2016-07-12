@@ -1,14 +1,17 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.app.LoaderManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -46,6 +49,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
    */
 
   private static final int CURSOR_LOADER_ID = 0;
+  private static BroadcastReceiver messageReceiver;
   boolean isConnected;
   /**
    * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -98,6 +102,15 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     mContext = this;
 
     setContentView(R.layout.activity_my_stocks);
+
+    messageReceiver = new BroadcastReceiver() {
+      @Override
+      public void onReceive(Context context, Intent intent) {
+        Toast.makeText(mContext, getString(R.string.stock_na_toast), Toast.LENGTH_SHORT).show();
+      }
+    };
+
+    LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, new IntentFilter("invalidstock"));
 
     setConnectivitySnackBar(savedInstanceState);
 
@@ -261,4 +274,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     mCursorAdapter.swapCursor(null);
   }
 
+  @Override
+  protected void onDestroy() {
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReceiver);
+    super.onDestroy();
+  }
 }
