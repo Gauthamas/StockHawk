@@ -8,6 +8,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -43,41 +45,62 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
    * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
    */
 
+  private static final int CURSOR_LOADER_ID = 0;
+  boolean isConnected;
   /**
    * Used to store the last screen title. For use in {@link #restoreActionBar()}.
    */
   private CharSequence mTitle;
   private Intent mServiceIntent;
   private ItemTouchHelper mItemTouchHelper;
-  private static final int CURSOR_LOADER_ID = 0;
   private QuoteCursorAdapter mCursorAdapter;
   private Context mContext;
   private Cursor mCursor;
-  boolean isConnected;
+
+  private void setConnectivitySnackBar(final Bundle savedInstanceState) {
+    final ConnectivityManager cm =
+            (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+    NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+    isConnected = activeNetwork != null &&
+            activeNetwork.isConnectedOrConnecting();
+
+    // The intent service is for executing immediate pulls from the Yahoo API
+    // GCMTaskService can only schedule tasks, they cannot execute immediately
+    mServiceIntent = new Intent(this, StockIntentService.class);
+    if (savedInstanceState == null) {
+      // Run the initialize task service so that some stocks appear upon an empty database
+      mServiceIntent.putExtra("tag", "init");
+      if (isConnected) {
+        startService(mServiceIntent);
+      } else {
+        FrameLayout f = ((FrameLayout) findViewById(R.id.frame));
+        Snackbar snackbar = Snackbar
+                .make(f, "No internet connection!", Snackbar.LENGTH_INDEFINITE)
+                .setAction("RETRY", new View.OnClickListener() {
+                  @Override
+                  public void onClick(View view) {
+                    setConnectivitySnackBar(savedInstanceState);
+
+                  }
+                });
+        snackbar.show();
+
+      }
+    }
+
+
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mContext = this;
-    ConnectivityManager cm =
-        (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-    NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-    isConnected = activeNetwork != null &&
-        activeNetwork.isConnectedOrConnecting();
     setContentView(R.layout.activity_my_stocks);
-    // The intent service is for executing immediate pulls from the Yahoo API
-    // GCMTaskService can only schedule tasks, they cannot execute immediately
-    mServiceIntent = new Intent(this, StockIntentService.class);
-    if (savedInstanceState == null){
-      // Run the initialize task service so that some stocks appear upon an empty database
-      mServiceIntent.putExtra("tag", "init");
-      if (isConnected){
-        startService(mServiceIntent);
-      } else{
-        networkToast();
-      }
-    }
+
+    setConnectivitySnackBar(savedInstanceState);
+
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);

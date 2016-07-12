@@ -2,6 +2,7 @@ package com.sam_chordas.android.stockhawk.widget;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -9,6 +10,7 @@ import android.widget.RemoteViewsService;
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+import com.sam_chordas.android.stockhawk.ui.DetailActivity;
 
 /**
  * Created by gau on 7/4/2016.
@@ -62,6 +64,10 @@ public class StockRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
         rv.setTextViewText(R.id.stock_symbol,c.getString(c.getColumnIndex("symbol")));
         rv.setTextViewText(R.id.bid_price,c.getString(c.getColumnIndex("bid_price")));
         rv.setTextViewText(R.id.change,c.getString(c.getColumnIndex("percent_change")));
+
+        Intent fillInIntent = new Intent();
+        fillInIntent.putExtra("stockdata", c.getString(c.getColumnIndex("symbol")));
+        rv.setOnClickFillInIntent(R.id.list_row, fillInIntent);
 
 
         if (c.getInt(c.getColumnIndex("is_up")) == 1){

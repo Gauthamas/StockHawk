@@ -23,22 +23,18 @@ import org.json.JSONObject;
 public class Utils {
 
 
-    private static String LOG_TAG = Utils.class.getSimpleName();
-
     public static boolean showPercent = true;
+    private static String LOG_TAG = Utils.class.getSimpleName();
 
     public static ArrayList quoteJsonToContentVals(StockQuery sq) {
         ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
 
         try {
 
-            Log.e(LOG_TAG, "puttaloo almost");
             if (sq != null) {
-                Log.e(LOG_TAG, "puttaloo in");
                 List<StockData> sd = sq.query.results.quote;
 
                 for (StockData s : sd) {
-                    Log.e(LOG_TAG, "puttaloo counting");
                     batchOperations.add(buildBatchOperation(s));
                 }
             }
