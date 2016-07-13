@@ -13,6 +13,12 @@
     <string name="stock_na_toast">Uh-oh! Stock not available!!!</string>
     <string name="widget_label">"Stock Widget"</string>
     <string name="fab_desc">"Button to add a stock"</string>
+    <string name="open_string">"Open :"</string>
+    <string name="date_string">"Date :"</string>
+    <string name="close_string">"Close :"</string>
+    <string name="high_string">"High :"</string>
+    <string name="volume_string">"Volume :"</string>
+    <string name="na">"N.A."</string>
 
 
     <string-array name="stockHistory">

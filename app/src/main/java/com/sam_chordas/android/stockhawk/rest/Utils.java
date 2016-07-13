@@ -142,14 +142,14 @@ public class Utils {
 
     }
 
-    public static List<String> getWeekString() {
+    public static List<String> getWeekandSomeString() {
 
         Calendar rightNow = Calendar.getInstance();
         List<String> week = new ArrayList<String>();
-        rightNow.add(Calendar.DATE, -6);
+        rightNow.add(Calendar.DATE, -11);
         week.add(getDate(rightNow));
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 11; i++) {
             rightNow.add(Calendar.DATE, 1);
             week.add(getDate(rightNow));
 
@@ -159,14 +159,14 @@ public class Utils {
     }
 
 
-    public static List<String> getMonthString() {
+    public static List<String> getMonthandSomeString() {
 
         Calendar rightNow = Calendar.getInstance();
         List<String> week = new ArrayList<String>();
-        rightNow.add(Calendar.DATE, -29);
+        rightNow.add(Calendar.DATE, -34);
         week.add(getDate(rightNow));
 
-        for (int i = 0; i < 29; i++) {
+        for (int i = 0; i < 34; i++) {
             rightNow.add(Calendar.DATE, 1);
             week.add(getDate(rightNow));
 
@@ -175,14 +175,14 @@ public class Utils {
 
     }
 
-    public static List<String> getThreeMonthString() {
+    public static List<String> getThreeMonthandSomeString() {
 
         Calendar rightNow = Calendar.getInstance();
         List<String> week = new ArrayList<String>();
-        rightNow.add(Calendar.DATE, -89);
+        rightNow.add(Calendar.DATE, -94);
         week.add(getDate(rightNow));
 
-        for (int i = 0; i < 89; i++) {
+        for (int i = 0; i < 94; i++) {
             rightNow.add(Calendar.DATE, 1);
             week.add(getDate(rightNow));
 

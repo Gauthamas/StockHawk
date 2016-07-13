@@ -23,4 +23,13 @@ public class StockData {
     @SerializedName("symbol")
     public String symbol;
 
+    @SerializedName("Volume")
+    public String volume;
+
+    @SerializedName("Open")
+    public String open;
+
+    @SerializedName("DaysHigh")
+    public String daysHigh;
+
 }
