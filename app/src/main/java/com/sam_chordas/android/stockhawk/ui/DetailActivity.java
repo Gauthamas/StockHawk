@@ -299,11 +299,11 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
 
         String s = (String) adapterView.getItemAtPosition(i);
         sdhl.clear();
-        if (s.equals("week")) {
+        if (s.equals(getString(R.string.week))) {
             getWeekHistory(sym);
-        } else if (s.equals("30days")) {
+        } else if (s.equals(getString(R.string.days30))) {
             getMonthHistory(sym);
-        } else if (s.equals("90days")) {
+        } else if (s.equals(getString(R.string.days90))) {
             getThreeMonthHistory(sym);
         }
 

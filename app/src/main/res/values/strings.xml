@@ -20,7 +20,11 @@
     <string name="high_string">"High :"</string>
     <string name="volume_string">"Volume :"</string>
     <string name="curr_string">"current :"</string>
+    <string name="error">"Error :"</string>
     <string name="na">"N.A."</string>
+    <string name="week">"week"</string>
+    <string name="days30">"30days"</string>
+    <string name="days90">"90days"</string>
 
 
     <string-array name="stockHistory">
