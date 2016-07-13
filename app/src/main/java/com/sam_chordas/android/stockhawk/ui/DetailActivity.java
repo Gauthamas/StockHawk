@@ -1,6 +1,7 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,8 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.sam_chordas.android.stockhawk.R;
+import com.sam_chordas.android.stockhawk.data.QuoteColumns;
+import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.network.StockData;
 import com.sam_chordas.android.stockhawk.network.StockDataHistory;
 import com.sam_chordas.android.stockhawk.network.StockNetworkAdapter;
@@ -36,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -50,12 +55,28 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
             "&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=";
     private static StockNetworkAdapter stockNetworkAdapter = StockNetworkAdapter.getAdapter();
     private static List<String> sDates;
+    private static List<String> dates;
     private static String exactDate;
     private static StockDataHistory today = new StockDataHistory();
     private static String sym;
     private final String TAG = getClass().getSimpleName();
     ArrayList<StockDataHistory> sdhl;
-    TextView tvOpen, tvClose, tvHigh, tvVolume;
+
+    @BindView(R.id.openValue)
+    TextView tvOpen;
+    @BindView(R.id.closeValue)
+    TextView tvClose;
+    @BindView(R.id.highValue)
+    TextView tvHigh;
+    @BindView(R.id.volValue)
+    TextView tvVolume;
+    @BindView(R.id.dateValue)
+    TextView tvDate;
+    @BindView(R.id.spinner)
+    Spinner spinner;
+
+
+
     Callback<StockQueryHistory> response = new Callback<StockQueryHistory>() {
         @Override
         public void success(StockQueryHistory sd, Response response) {
@@ -71,12 +92,12 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
 
         }
     };
-    private Spinner spinner;
 
     @Override
     public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
 
         StockDataHistory sd = sdhl.get(h.getXIndex());
+        tvDate.setText(getString(R.string.date_string) + dates.get(h.getXIndex()));
         tvVolume.setText(getString(R.string.volume_string) + sd.volume);
         tvHigh.setText(getString(R.string.high_string) + sd.high);
         tvOpen.setText(getString(R.string.open_string) + sd.open);
@@ -97,6 +118,8 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
 
         int i = 0, j = sdh.size() - 1, k = 0;
         StockDataHistory curr = null;
+
+        //Iterate through the previous days to get data just prior to time period
         for (String s : sDates) {
             if (s.equals(exactDate))
                 break;
@@ -107,14 +130,17 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
             }
             k++;
         }
-        List<String> dates = sDates.subList(k, sDates.size());
+        dates = sDates.subList(k, sDates.size());
 
         float val = 0f;
         String na = getString(R.string.na);
+
         for (; k < sDates.size(); k++) {
+
             String s = sDates.get(k);
             StockDataHistory sd = sdh.get(j);
             boolean isCurr = false;
+
             if (sd.date.equals(s)) {
                 val = Float.parseFloat(sd.close);
                 isCurr = true;
@@ -122,6 +148,8 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
                 if (j > 0)
                     j--;
             }
+
+            //if day is holiday only populate close values from previous days.
 
             if (!isCurr) {
                 StockDataHistory sdcurr = new StockDataHistory();
@@ -138,7 +166,8 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
 
         }
         // creating list of entry
-
+        sdhl.remove(sdhl.size() - 1);
+        sdhl.add(today);
 
         LineDataSet dataset = new LineDataSet(entries, "# of Calls");
         dataset.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -209,11 +238,11 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_graph);
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        tvOpen = (TextView) findViewById(R.id.openValue);
-        tvClose = (TextView) findViewById(R.id.closeValue);
-        tvHigh = (TextView) findViewById(R.id.highValue);
-        tvVolume = (TextView) findViewById(R.id.volValue);
+
+        ButterKnife.bind(this);
+
+
+
 
         sdhl = new ArrayList<StockDataHistory>();
 
@@ -222,6 +251,44 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
         spinner.setOnItemSelectedListener(this);
 
         sym = getIntent().getStringExtra("stockdata");
+
+        Cursor cr = null;
+
+        try {
+            cr = getContentResolver().query(QuoteProvider.Quotes.withSymbol(sym),
+                    null, QuoteColumns.ISCURRENT + " = ?",
+                    new String[]{"1"}, null);
+            if (cr != null && cr.getCount() != 0) {
+                cr.moveToFirst();
+                int opc = cr.getColumnIndex(QuoteColumns.OPEN);
+                int clc = cr.getColumnIndex(QuoteColumns.BIDPRICE);
+                int hic = cr.getColumnIndex(QuoteColumns.HIGH);
+                int vc = cr.getColumnIndex(QuoteColumns.VOLUME);
+
+                //Today's stock might not be closed, hence added the current tag
+                today.close = getString(R.string.curr_string) + cr.getString(clc);
+                today.open = cr.getString(opc);
+                today.volume = cr.getString(vc);
+                today.high = cr.getString(hic);
+                String na = getString(R.string.na);
+
+                //On off days put na for everything other than close.
+                if (today.open == null) {
+                    today.open = na;
+                    today.high = na;
+                    today.volume = na;
+
+                }
+            }
+        } catch (
+                Exception e
+                ) {
+            Log.e(TAG, "exception: " + e);
+
+        } finally {
+            cr.close();
+        }
+
         getWeekHistory(sym);
 
 

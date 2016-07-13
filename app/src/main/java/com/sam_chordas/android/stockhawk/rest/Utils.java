@@ -77,6 +77,9 @@ public class Utils {
             builder.withValue(QuoteColumns.BIDPRICE, sd.bid);
             builder.withValue(QuoteColumns.PERCENT_CHANGE, truncateChange(
                     sd.changePercent, true));
+            builder.withValue(QuoteColumns.HIGH, sd.daysHigh);
+            builder.withValue(QuoteColumns.OPEN, sd.open);
+            builder.withValue(QuoteColumns.VOLUME, sd.volume);
             builder.withValue(QuoteColumns.CHANGE, truncateChange(change, false));
             builder.withValue(QuoteColumns.ISCURRENT, 1);
             if (change.charAt(0) == '-') {
