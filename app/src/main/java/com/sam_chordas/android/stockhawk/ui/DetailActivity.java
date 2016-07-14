@@ -127,7 +127,13 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
         }
         dates = sDates.subList(k, sDates.size());
 
-        float val = 0f;
+        float val = 0;
+
+        try {
+            val = Float.parseFloat(curr.close);
+        } catch (NumberFormatException e) {
+            Log.d(TAG, e.toString());
+        }
         String na = getString(R.string.na);
 
         for (; k < sDates.size(); k++) {
