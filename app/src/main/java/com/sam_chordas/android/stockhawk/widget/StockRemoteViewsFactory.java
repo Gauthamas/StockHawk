@@ -66,7 +66,7 @@ public class StockRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
         rv.setTextViewText(R.id.change,c.getString(c.getColumnIndex("percent_change")));
 
         Intent fillInIntent = new Intent();
-        fillInIntent.putExtra("stockdata", c.getString(c.getColumnIndex("symbol")));
+        fillInIntent.putExtra(mContext.getString(R.string.stockd), c.getString(c.getColumnIndex("symbol")));
         rv.setOnClickFillInIntent(R.id.list_row, fillInIntent);
 
 

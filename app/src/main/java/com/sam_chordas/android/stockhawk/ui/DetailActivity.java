@@ -47,12 +47,7 @@ import retrofit.client.Response;
 
 public class DetailActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, OnChartValueSelectedListener {
 
-    public static final String queryPart1 =
-            "select%20*%20from%20yahoo.finance.historicaldata%20where%20symbol%20%3D%20";
-    public static final String queryPart2 = "%20and%20startDate%20%3D%20";
-    public static final String queryPart3 = "%20and%20endDate%20%3D%20";
-    public static final String queryPart4 =
-            "&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=";
+
     private static StockNetworkAdapter stockNetworkAdapter = StockNetworkAdapter.getAdapter();
     private static List<String> sDates;
     private static List<String> dates;
@@ -88,7 +83,7 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
 
         @Override
         public void failure(RetrofitError error) {
-            Log.e(TAG, "failure: " + error);
+            Log.e(TAG, getString(R.string.failure) + error);
 
         }
     };
@@ -169,7 +164,7 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
         sdhl.remove(sdhl.size() - 1);
         sdhl.add(today);
 
-        LineDataSet dataset = new LineDataSet(entries, "# of Calls");
+        LineDataSet dataset = new LineDataSet(entries, getString(R.string.calls));
         dataset.setColors(ColorTemplate.COLORFUL_COLORS);
 
         // creating labels
@@ -199,13 +194,13 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
 
         try {
             // Base URL for the Yahoo query
-            urlStringBuilder1.append(queryPart1);
+            urlStringBuilder1.append(getString(R.string.queryPart1));
             urlStringBuilder1.append(URLEncoder.encode("\"" + symbol + "\"", "UTF-8"));
-            urlStringBuilder1.append(queryPart2);
+            urlStringBuilder1.append(getString(R.string.queryPart2));
             urlStringBuilder1.append(URLEncoder.encode("\"" + startdate + "\"", "UTF-8"));
-            urlStringBuilder1.append(queryPart3);
+            urlStringBuilder1.append(getString(R.string.queryPart3));
             urlStringBuilder1.append(URLEncoder.encode("\"" + endDate + "\"", "UTF-8"));
-            urlStringBuilder1.append(queryPart4);
+            urlStringBuilder1.append(getString(R.string.queryPart4));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -238,6 +233,7 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_graph);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ButterKnife.bind(this);
 
@@ -250,7 +246,7 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
                 R.array.stockHistory, android.R.layout.simple_spinner_item);
         spinner.setOnItemSelectedListener(this);
 
-        sym = getIntent().getStringExtra("stockdata");
+        sym = getIntent().getStringExtra(getString(R.string.stockd));
 
         Cursor cr = null;
 
@@ -283,7 +279,7 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
         } catch (
                 Exception e
                 ) {
-            Log.e(TAG, "exception: " + e);
+            Log.e(TAG, getString(R.string.exception) + e);
 
         } finally {
             cr.close();

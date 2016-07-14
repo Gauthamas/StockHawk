@@ -41,7 +41,8 @@ public class Utils {
 
 
         } catch (Exception e) {
-            Log.e(LOG_TAG, "String to JSON failed: " + e);
+            Log.e(LOG_TAG,
+                    e.toString());
         }
         return batchOperations;
     }

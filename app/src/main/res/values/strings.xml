@@ -7,7 +7,7 @@
     <string name="action_change_units">Change Units</string>
     <string name="symbol_search">Symbol Search</string>
     <string name="content_test">Search for a Stock Symbol</string>
-    <string name="input_hint">FB</string>
+    <string name="input_hint" translatable="false">FB</string>
     <string name="input_prefill"></string>
     <string name="network_toast">Uh-oh! This app requires an internet connection</string>
     <string name="stock_na_toast">Uh-oh! Stock not available!!!</string>
@@ -25,6 +25,30 @@
     <string name="week">"week"</string>
     <string name="days30">"30days"</string>
     <string name="days90">"90days"</string>
+
+
+    <string name="noInternet"> "No internet connection!"</string>
+    <string name="retry">"RETRY"</string>
+
+    <string name="stockSaved"> "This stock is already saved!"</string>
+
+    <string name="queryPart1" translatable="false">
+        "select%20*%20from%20yahoo.finance.historicaldata%20where%20symbol%20%3D%20"</string>
+
+    <string name="queryPart2" translatable="false">
+       "%20and%20startDate%20%3D%20"</string>
+
+    <string name="queryPart3" translatable="false">
+        "%20and%20endDate%20%3D%20"</string>
+
+    <string name="queryPart4" translatable="false">
+         "&amp;format=json&amp;diagnostics=true&amp;env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&amp;callback="</string>
+    <string name="stockd" translatable="false">"stockdata"</string>
+
+
+    <string name="failure">"Failure:"</string>
+    <string name="exception">"Exception :"</string>
+    <string name="calls">"# of Calls"</string>
 
 
     <string-array name="stockHistory">

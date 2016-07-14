@@ -143,7 +143,7 @@ public class StockTaskService extends GcmTaskService {
 
 
                 } catch (RemoteException | OperationApplicationException e) {
-                    Log.e(LOG_TAG, "Error applying batch insert", e);
+                    Log.e(LOG_TAG, e.toString());
                 }
 
             } catch (Exception e) {

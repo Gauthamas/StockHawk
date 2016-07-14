@@ -80,8 +80,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       } else {
         FrameLayout f = ((FrameLayout) findViewById(R.id.frame));
         Snackbar snackbar = Snackbar
-                .make(f, "No internet connection!", Snackbar.LENGTH_INDEFINITE)
-                .setAction("RETRY", new View.OnClickListener() {
+                .make(f, getString(R.string.noInternet), Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(R.string.retry), new View.OnClickListener() {
                   @Override
                   public void onClick(View view) {
                     setConnectivitySnackBar(savedInstanceState);
@@ -127,7 +127,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 Intent intent = new Intent(mContext, DetailActivity.class);
                 TextView tv = (TextView) v.findViewById(R.id.stock_symbol);
 
-                intent.putExtra("stockdata", tv.getText());
+                intent.putExtra(getString(R.string.stockd), tv.getText());
                 startActivity(intent);
               }
             }));
@@ -151,7 +151,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                       new String[] { input.toString() }, null);
                   if (c!=null && c.getCount() != 0) {
                     Toast toast =
-                        Toast.makeText(MyStocksActivity.this, "This stock is already saved!",
+                            Toast.makeText(MyStocksActivity.this, getString(R.string.stockSaved),
                             Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                     toast.show();
