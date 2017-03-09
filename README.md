@@ -17,7 +17,7 @@ The app includes the following features
 - [Stetho](https://github.com/facebook/stetho) 
 - [Retrofit](https://github.com/square/retrofit)
 - [Schematic](https://github.com/SimonVT/schematic)
-- [Picasso](https://github.com/square/picasso)
+- [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
 
 ## License
 
