@@ -5,6 +5,8 @@ Stock hawk app developed as part of course work for Android development nanodegr
 
 ![](https://github.com/Gauthamas/StockHawk/blob/master/images/newUI2.png)
 
+![](https://github.com/Gauthamas/StockHawk/blob/master/images/widget.png)
+
 ## Features 
 
 The app includes the following features
