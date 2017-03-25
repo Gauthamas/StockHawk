@@ -1,15 +1,26 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <!-- Base application theme. -->
   <style name="AppTheme"
       parent="Theme.AppCompat">
-      <item name="colorPrimary">@color/material_blue_500</item>
-      <item name="colorPrimaryDark">@color/material_blue_700</item>
-    <item name="android:windowBackground">@color/white_opaque</item>
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+
+    <item name="android:textColorPrimary">@color/textColorPrimary</item>
+    <item name="android:textColorSecondary">@color/textColorSecondary</item>
+
+    <item name="android:windowBackground">@color/background_color</item>
+
+    <item name="colorControlNormal">?attr/colorAccent</item>
+    <item name="colorControlActivated">@color/colorControlActivated</item>
+    <item name="colorControlHighlight">@color/colorControlHighlight</item>
+
+    <item name="android:statusBarColor" tools:targetApi="lollipop">@color/transparent</item>
 
 
-    <!-- Customize your theme here. -->
   </style>
+
 
   <style name="PercentChangeTextStyle">
     <item name="android:textSize">12sp</item>
@@ -18,12 +29,12 @@
   </style>
   <style name="BidPriceTextStyle">
     <item name="android:textSize">12sp</item>
-    <item name="android:textColor">@color/black_opaque</item>
+    <item name="android:textColor">@color/textColorPrimary</item>
   </style>
   <style name="StockSymbolTextStyle">
     <item name="android:textSize">16sp</item>
     <item name="android:textAllCaps">true</item>
-    <item name="android:textColor">@color/black_opaque</item>
+    <item name="android:textColor">@color/textColorPrimary</item>
   </style>
 
 </resources>

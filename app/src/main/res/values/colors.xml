@@ -6,4 +6,23 @@
   <color name="material_green_700">#00C853</color>
   <color name="white_opaque">#FFFFFFFF</color>
   <color name="black_opaque">#000</color>
+
+  <!-- Common -->
+  <color name="transparent">#00000000</color>
+  <color name="white">#FFFFFF</color>
+  <color name="black">#000000</color>
+
+  <!-- Theme - Dark Blue -->
+  <color name="background_color">#9C27B0</color>
+  <color name="gradientColor">#BA68C8</color>
+  <color name="colorControlActivated">#E1BEE7</color>
+  <color name="colorControlHighlight">#E1BEE7</color>
+
+  <color name="colorPrimary">#E040FB</color>
+  <color name="colorPrimaryDark">#7B1FA2</color>
+  <color name="colorAccent">#FFFFFF</color>
+  <color name="textColorPrimary">#FFFFFF</color>
+  <color name="textColorSecondary">#9C27B0</color>
+
+ 
 </resources>

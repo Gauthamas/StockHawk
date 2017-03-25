@@ -42,6 +42,9 @@ import com.facebook.stetho.Stetho;
 import com.melnykov.fab.FloatingActionButton;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
   /**
@@ -95,6 +98,10 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
 
   }
+  @Override
+  protected void attachBaseContext(Context newBase) {
+    super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +117,11 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       }
     };
 
+    CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+            .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
+            .setFontAttrId(R.attr.fontPath)
+            .build()
+    );
     LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, new IntentFilter("invalidstock"));
 
     setConnectivitySnackBar(savedInstanceState);

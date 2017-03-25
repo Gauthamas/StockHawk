@@ -171,7 +171,7 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
         sdhl.add(today);
 
         LineDataSet dataset = new LineDataSet(entries, getString(R.string.calls));
-        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
+
 
         // creating labels
 
@@ -183,6 +183,19 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
         lineChart.setSelected(true);
         lineChart.setScaleEnabled(false);
         lineChart.setPinchZoom(false);
+        lineChart.setBackgroundColor(getResources().getColor(R.color.background_color));
+        lineChart.setDrawGridBackground(false);
+        lineChart.setDrawBorders(false);
+        int color = getResources().getColor(R.color.white_opaque);
+        lineChart.getXAxis().setTextColor(color);
+        lineChart.getAxisLeft().setTextColor(color);
+        lineChart.getAxisRight().setTextColor(color);
+        lineChart.getLegend().setTextColor(color);
+        lineChart.getXAxis().setGridColor(color);
+        lineChart.getAxisRight().setGridColor(color);
+        lineChart.getAxisLeft().setGridColor(color);
+        lineChart.setDescription("");
+
 
 
         LineData data = new LineData(dates, dataset);
@@ -190,7 +203,7 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
         lineChart.setData(data); // set the data and list of lables into chart
 
 
-        lineChart.animateXY(5000, 7000);
+
 
 
     }
@@ -253,6 +266,7 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
         spinner.setOnItemSelectedListener(this);
 
         sym = getIntent().getStringExtra(getString(R.string.stockd));
+        getSupportActionBar().setTitle(sym+" prices over period");
 
         Cursor cr = null;
 
